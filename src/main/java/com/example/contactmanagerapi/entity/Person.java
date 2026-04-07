@@ -2,18 +2,14 @@ package com.example.contactmanagerapi.entity;
 
 import com.example.contactmanagerapi.enums.PersonStatus;
 import jakarta.persistence.*;
-import jakarta.transaction.Status;
-import jakarta.validation.constraints.Email;
-import jdk.jshell.Snippet;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "person")
+@Table(name = "persons")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,20 +31,32 @@ public class Person {
     @Column(nullable = false)
     private PersonStatus status;
 
-    @Column (nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "person",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     @Builder.Default
     private List<Phone> phones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "person",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     @Builder.Default
     private List<Address> addresses = new ArrayList<>();
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createdAt = LocalDateTime.now();
-        if (this.status == null) this.status = PersonStatus.ATIVO;
+        if (this.status == null) {
+            this.status = PersonStatus.ATIVO;
+        }
     }
 }

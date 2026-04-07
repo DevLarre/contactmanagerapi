@@ -2,7 +2,6 @@ package com.example.contactmanagerapi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.UUID;
 
 @Entity
@@ -12,17 +11,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class Address {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(nullable = false)
     private String street;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 20)
     private String number;
 
     @Column(nullable = false, length = 100)
@@ -37,7 +35,8 @@ public class Address {
     @Column(nullable = false, length = 9)
     private String zipCode;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_address_person"))
     private Person person;
 }

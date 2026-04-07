@@ -25,7 +25,7 @@ public class PersonMapper {
         List<Phone> phones = dto.phones().stream()
                 .map(p -> Phone.builder()
                         .number(p.number())
-                        .phone(p.type())
+                        .type(p.type())
                         .person(person)
                         .build())
                 .toList();
@@ -50,7 +50,7 @@ public class PersonMapper {
 
     public PersonResponseDto toDto(Person entity) {
         List<PhoneResponseDto> phones = entity.getPhones().stream()
-                .map(p -> new PhoneResponseDto(p.getId(), p.getNumber(), p.getPhone()))
+                .map(p -> new PhoneResponseDto(p.getId(), p.getNumber(), p.getType()))
                 .toList();
 
         List<AddressResponseDto> addresses = entity.getAddresses().stream()

@@ -3,7 +3,6 @@ package com.example.contactmanagerapi.entity;
 import com.example.contactmanagerapi.enums.PhoneType;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.UUID;
 
 @Entity
@@ -19,14 +18,15 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 20)
     private String number;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private PhoneType phone;
+    private PhoneType type;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_phone_person"))
     private Person person;
 }
